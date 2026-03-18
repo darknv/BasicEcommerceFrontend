@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { ShoppingCart } from 'lucide-react';
-import { CartContext } from '../context/CartContext';
+import { CartContext } from '../context/useCart';
 import { Link } from 'react-router-dom';
 
 

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { CartContext } from '../context/CartContext'
+import { CartContext } from '../context/useCart';
 import { Filter } from 'lucide-react';
 import toast from 'react-hot-toast';
 
