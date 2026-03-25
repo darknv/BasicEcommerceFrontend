@@ -2,14 +2,41 @@ import React, { useContext } from "react";
 import { CartContext } from '../context/useCart';
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import { Minus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 const CartPage = () => {
   const { cart, setCart } = useContext(CartContext);
 
+
   const totalAmount = cart.reduce((acc, item) => {
-    const priceAsNumber = parseInt(item.price.replace(/\D/g, ""));
-    return acc + priceAsNumber;
-  }, 0);
+  const priceAsNumber = parseInt(item.price.replace(/\D/g, ""));
+  // Multiply price by quantity!
+  return acc + (priceAsNumber * item.quantity);
+}, 0);
+
+
+  // const totalAmount = cart.reduce((acc, item) => {
+  //   const priceAsNumber = parseInt(item.price.replace(/\D/g, ""));
+  //   return acc + priceAsNumber;
+  // }, 0);
+
+  const increaseQuantity = (id) => {
+  setCart(cart.map(item => 
+    item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+  ));
+};
+
+const decreaseQuantity = (id) => {
+  setCart(cart.map(item => {
+    if (item.id === id) {
+      // If quantity is 1 and user hits minus, we can either remove it or stop at 1
+      const newQty = item.quantity > 1 ? item.quantity - 1 : 1;
+      return { ...item, quantity: newQty };
+    }
+    return item;
+  }));
+};
 
   // Challenge: Logic to remove an item from this page too!
   const removeItem = (elem) => {
@@ -61,12 +88,20 @@ const CartPage = () => {
                   <p>{item.price}</p>
                 </div>
               </div>
+              <div className="flex gap-5">
+                 <div className="flex justify-center items-center gap-2">
+                  <Plus onClick={()=> increaseQuantity(item.id)}/>
+                <h2>Quantity {item.quantity} </h2>
+                <Minus onClick={()=> decreaseQuantity(item.id)}/>
+              </div>
               <button
                 onClick={() => removeItem(item)}
                 className="bg-red-500 text-white px-3 py-1 rounded"
               >
                 Remove
               </button>
+              </div>
+             
             </div>
           ))}
 

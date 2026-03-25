@@ -14,17 +14,26 @@ const removeFromCart = ()=>{
 }
 
 const handleAddToCart = ()=>{
-  setCart((prevCart) => [...prevCart, item]);
+  setCart((prevCart) => {
+    const foundData = prevCart.find((elem)=> elem.id === item.id);
+    if(foundData){
+      return prevCart.map((elem)=>
+        elem.id === item.id
+        ?{...elem,quantity:elem.quantity+1}
+        :elem
+  );
+    }
+    return [...prevCart , {...item,quantity:1}];
+  });
   toast.success(`${item.name} added to the cart!`,{
     style:{
       borderRadius:'10px',
       background:'#333',
       color:'#fff',
     },
-  });
-};
+});
  
-
+}
 
   return (
     <>
@@ -44,5 +53,6 @@ const handleAddToCart = ()=>{
    
   )
 }
+
 
 export default ProductCard
